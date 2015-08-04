@@ -12,8 +12,7 @@ class ViewController: UIViewController
 {
     @IBOutlet weak var infiniteCollectionView: InfiniteCollectionView!
     
-    
-    let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
+    private let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
 
     override func viewDidLoad()
     {
@@ -21,12 +20,6 @@ class ViewController: UIViewController
         infiniteCollectionView.registerNib(UINib(nibName: "ExampleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cellCollectionView")
         infiniteCollectionView.infiniteDataSource = self
         infiniteCollectionView.reloadData()
-    }
-
-    override func didReceiveMemoryWarning()
-    {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 }
 

@@ -16,6 +16,11 @@
 		FDEB8CA11B70E9C30011E5C9 /* InfiniteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8CA01B70E9C30011E5C9 /* InfiniteCollectionView.swift */; };
 		FDEB8CA41B7103640011E5C9 /* ExampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8CA21B7103640011E5C9 /* ExampleCollectionViewCell.swift */; };
 		FDEB8CA51B7103640011E5C9 /* ExampleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDEB8CA31B7103640011E5C9 /* ExampleCollectionViewCell.xib */; };
+		FDEB8CA61B714F040011E5C9 /* InfiniteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8CA01B70E9C30011E5C9 /* InfiniteCollectionView.swift */; };
+		FDEB8CA71B714F330011E5C9 /* ExampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8CA21B7103640011E5C9 /* ExampleCollectionViewCell.swift */; };
+		FDEB8CA81B7164550011E5C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8C821B70E8FA0011E5C9 /* ViewController.swift */; };
+		FDEB8CA91B7167850011E5C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FDEB8C841B70E8FA0011E5C9 /* Main.storyboard */; };
+		FDEB8CAA1B71679B0011E5C9 /* ExampleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDEB8CA31B7103640011E5C9 /* ExampleCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,6 +217,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDEB8CA91B7167850011E5C9 /* Main.storyboard in Resources */,
+				FDEB8CAA1B71679B0011E5C9 /* ExampleCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +240,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDEB8CA71B714F330011E5C9 /* ExampleCollectionViewCell.swift in Sources */,
+				FDEB8CA61B714F040011E5C9 /* InfiniteCollectionView.swift in Sources */,
+				FDEB8CA81B7164550011E5C9 /* ViewController.swift in Sources */,
 				FDEB8C971B70E8FA0011E5C9 /* ExampleInfiniteScrollViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,6 +433,7 @@
 				FDEB8C9C1B70E8FA0011E5C9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FDEB8C9D1B70E8FA0011E5C9 /* Build configuration list for PBXNativeTarget "ExampleInfiniteScrollViewTests" */ = {
 			isa = XCConfigurationList;
@@ -431,6 +442,7 @@
 				FDEB8C9F1B70E8FA0011E5C9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

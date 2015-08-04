@@ -6,14 +6,6 @@
 //  Copyright (c) 2015 Maso Apps Ltd. All rights reserved.
 //
 
-//
-//  InfiniteCollectionView.swift
-//  Word Search
-//
-//  Created by Mason L'Amy on 14/01/2015.
-//  Copyright (c) 2015 Maso Apps Ltd. All rights reserved.
-//
-
 import UIKit
 
 protocol InfiniteCollectionViewDataSource : UICollectionViewDataSource
@@ -25,48 +17,49 @@ class InfiniteCollectionView: UICollectionView
 {
     var infiniteDataSource: InfiniteCollectionViewDataSource?
     private let cellPadding: CGFloat = 10
-    var indexOffset = 0
+    private var indexOffset = 0
     
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
-        registerNib(UINib(nibName: "WordCell", bundle: nil), forCellWithReuseIdentifier: "cellWord")
-        registerNib(UINib(nibName: "PicWordCell", bundle: nil), forCellWithReuseIdentifier: "cellPicWord")
         dataSource = self
         backgroundColor = UIColor.grayColor()
     }
     
-    func shiftWordArray(offset: Int)
+    func shiftContentArray(offset: Int)
     {
-       /* if (offset > 0)
+        indexOffset += offset
+        
+        if let numberOfItems = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0)
         {
-            //Right shift
-            let removeRange = words!.endIndex - offset..<words!.endIndex
-            let removedElements = words![removeRange]
-            words!.removeRange(removeRange)
-            var i = 0
-            for word in removedElements
+            if (indexOffset >= numberOfItems)
             {
-                words!.insert(word, atIndex: i)
-                i++
+                indexOffset -= numberOfItems
             }
         }
-        else
-        {
-            //Left shift
-            let endIndex: Int = abs(offset)
-            let removeRange = 0..<endIndex
-            let removedElements = words![removeRange]
-            words!.removeRange(removeRange)
-            for word in removedElements
-            {
-                words!.append(word)
-            }
-        }*/
-        indexOffset += offset
+        printCurrentContentArray()
     }
     
+    func printCurrentContentArray()
+    {
+        var currentContent = [String]()
+        if let numberOfItems = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0)
+        {
+            for indexRow in 0..<numberOfItems
+            {
+                let correctedIndex = getCorrectedIndex(indexRow + indexOffset)
+                currentContent.append((infiniteDataSource!.collectionView(self, cellForItemAtIndexPath: NSIndexPath(forRow: correctedIndex, inSection: 0)) as! ExampleCollectionViewCell).lbTitle.text!)
+            }
+        }
+        println("Current Content: \(currentContent)")
+    }
     
+    override func layoutSubviews()
+    {
+        super.layoutSubviews()
+        centreIfNeeded()
+    }
+
     func centreIfNeeded()
     {
         let currentOffset = contentOffset
@@ -78,48 +71,43 @@ class InfiniteCollectionView: UICollectionView
         
         if (fabs(distFromCentre) > (contentWidth / 4))
         {
-            
-            // Total cells including partial cells from centre
-            let cellcount = distFromCentre/(70.0+cellPadding)
-            
-            // Amount of cells to shift (whole number) - conditional statement due to nature of +ve or -ve cellcount
-            let shiftCells = Int((cellcount > 0) ? floor(cellcount) : ceil(cellcount))
-            
-            // Amount left over to correct for
-            let offsetCorrection = (abs(cellcount) % 1) * (70.0+cellPadding)
-            
-            // Scroll back to the centre of the view, offset by the correction to ensure it's not noticable
-            if (contentOffset.x < centerOffsetX)
+            if let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
             {
-                //left scrolling
-                contentOffset = CGPoint(x: centerOffsetX - offsetCorrection, y: currentOffset.y)
+                // Total cells including partial cells from centre
+                let cellcount = distFromCentre/(cellWidth+cellPadding)
+                
+                // Amount of cells to shift (whole number) - conditional statement due to nature of +ve or -ve cellcount
+                let shiftCells = Int((cellcount > 0) ? floor(cellcount) : ceil(cellcount))
+                
+                // Amount left over to correct for
+                let offsetCorrection = (abs(cellcount) % 1) * (cellWidth+cellPadding)
+                
+                // Scroll back to the centre of the view, offset by the correction to ensure it's not noticable
+                if (contentOffset.x < centerOffsetX)
+                {
+                    //left scrolling
+                    contentOffset = CGPoint(x: centerOffsetX - offsetCorrection, y: currentOffset.y)
+                }
+                else if (contentOffset.x > centerOffsetX)
+                {
+                    //right scrolling
+                    contentOffset = CGPoint(x: centerOffsetX + offsetCorrection, y: currentOffset.y)
+                }
+                
+                // Make content shift as per shiftCells
+                shiftContentArray(getCorrectedIndex(shiftCells))
+                
+                // Reload cells, due to data shift changes above
+                reloadData()
             }
-            else if (contentOffset.x > centerOffsetX)
-            {
-                //right scrolling
-                contentOffset = CGPoint(x: centerOffsetX + offsetCorrection, y: currentOffset.y)
-            }
-            
-            // Make content shift as per shiftCells
-            shiftWordArray(getCorrectedWordIndex(shiftCells))
-            
-            // Reload cells, due to data shift changes above
-            reloadData()
         }
-        
     }
     
-    override func layoutSubviews()
-    {
-        super.layoutSubviews()
-        centreIfNeeded()
-    }
-    
-    private func getCorrectedWordIndex(indexToCorrect: Int) -> Int
+    func getCorrectedIndex(indexToCorrect: Int) -> Int
     {
         if let numberOfCells = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0)
         {
-            if (indexToCorrect <= (numberOfCells - 1))
+            if (indexToCorrect < numberOfCells && indexToCorrect >= 0)
             {
                 return indexToCorrect
             }
@@ -137,20 +125,17 @@ class InfiniteCollectionView: UICollectionView
         }
     }
     
-    private func getTotalContentWidth() -> CGFloat
+    func getTotalContentWidth() -> CGFloat
     {
-        var width: CGFloat = 0.0
-        if let numberOfCells = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0)
+        if let numberOfCells = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0),
+        let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
         {
-            for row in 0...numberOfCells
-            {
-                if let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: row, inSection: 0))
-                {
-                    width += cellWidth + cellPadding
-                }
-            }
+            return CGFloat(numberOfCells) * (cellWidth + cellPadding)
         }
-        return width
+        else
+        {
+            return 0.0
+        }
     }
 }
 
@@ -160,6 +145,7 @@ extension InfiniteCollectionView: UICollectionViewDataSource
     {
         if let numberOfItems = infiniteDataSource?.collectionView(self, numberOfItemsInSection: section)
         {
+            println("numberOfItems * 3: \(3 * numberOfItems)")
             return  3 * numberOfItems
         }
         else
@@ -170,6 +156,7 @@ extension InfiniteCollectionView: UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
-        return infiniteDataSource!.collectionView(collectionView, cellForItemAtIndexPath: NSIndexPath(forRow: getCorrectedWordIndex(indexPath.row + indexOffset), inSection: 0))
+        println("indexPath row: \(indexPath.row)")
+        return infiniteDataSource!.collectionView(collectionView, cellForItemAtIndexPath: NSIndexPath(forRow: getCorrectedIndex(indexPath.row + indexOffset), inSection: 0))
     }
 }
