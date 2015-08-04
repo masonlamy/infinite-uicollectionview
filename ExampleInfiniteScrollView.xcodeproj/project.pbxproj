@@ -13,6 +13,9 @@
 		FDEB8C881B70E8FA0011E5C9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDEB8C871B70E8FA0011E5C9 /* Images.xcassets */; };
 		FDEB8C8B1B70E8FA0011E5C9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDEB8C891B70E8FA0011E5C9 /* LaunchScreen.xib */; };
 		FDEB8C971B70E8FA0011E5C9 /* ExampleInfiniteScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8C961B70E8FA0011E5C9 /* ExampleInfiniteScrollViewTests.swift */; };
+		FDEB8CA11B70E9C30011E5C9 /* InfiniteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8CA01B70E9C30011E5C9 /* InfiniteCollectionView.swift */; };
+		FDEB8CA41B7103640011E5C9 /* ExampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEB8CA21B7103640011E5C9 /* ExampleCollectionViewCell.swift */; };
+		FDEB8CA51B7103640011E5C9 /* ExampleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDEB8CA31B7103640011E5C9 /* ExampleCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,9 @@
 		FDEB8C901B70E8FA0011E5C9 /* ExampleInfiniteScrollViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleInfiniteScrollViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDEB8C951B70E8FA0011E5C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FDEB8C961B70E8FA0011E5C9 /* ExampleInfiniteScrollViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleInfiniteScrollViewTests.swift; sourceTree = "<group>"; };
+		FDEB8CA01B70E9C30011E5C9 /* InfiniteCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteCollectionView.swift; sourceTree = "<group>"; };
+		FDEB8CA21B7103640011E5C9 /* ExampleCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleCollectionViewCell.swift; sourceTree = "<group>"; };
+		FDEB8CA31B7103640011E5C9 /* ExampleCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +85,10 @@
 			children = (
 				FDEB8C801B70E8FA0011E5C9 /* AppDelegate.swift */,
 				FDEB8C821B70E8FA0011E5C9 /* ViewController.swift */,
+				FDEB8CA01B70E9C30011E5C9 /* InfiniteCollectionView.swift */,
 				FDEB8C841B70E8FA0011E5C9 /* Main.storyboard */,
+				FDEB8CA21B7103640011E5C9 /* ExampleCollectionViewCell.swift */,
+				FDEB8CA31B7103640011E5C9 /* ExampleCollectionViewCell.xib */,
 				FDEB8C871B70E8FA0011E5C9 /* Images.xcassets */,
 				FDEB8C891B70E8FA0011E5C9 /* LaunchScreen.xib */,
 				FDEB8C7E1B70E8FA0011E5C9 /* Supporting Files */,
@@ -193,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDEB8C861B70E8FA0011E5C9 /* Main.storyboard in Resources */,
+				FDEB8CA51B7103640011E5C9 /* ExampleCollectionViewCell.xib in Resources */,
 				FDEB8C8B1B70E8FA0011E5C9 /* LaunchScreen.xib in Resources */,
 				FDEB8C881B70E8FA0011E5C9 /* Images.xcassets in Resources */,
 			);
@@ -212,6 +222,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDEB8CA11B70E9C30011E5C9 /* InfiniteCollectionView.swift in Sources */,
+				FDEB8CA41B7103640011E5C9 /* ExampleCollectionViewCell.swift in Sources */,
 				FDEB8C831B70E8FA0011E5C9 /* ViewController.swift in Sources */,
 				FDEB8C811B70E8FA0011E5C9 /* AppDelegate.swift in Sources */,
 			);
