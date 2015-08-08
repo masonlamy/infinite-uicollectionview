@@ -17,6 +17,12 @@ class ViewController: UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        setupInfiniteCollectionView()
+    }
+    
+    private func setupInfiniteCollectionView()
+    {
+        infiniteCollectionView.backgroundColor = UIColor.grayColor()
         infiniteCollectionView.registerNib(UINib(nibName: "ExampleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cellCollectionView")
         infiniteCollectionView.infiniteDataSource = self
         infiniteCollectionView.reloadData()
@@ -30,15 +36,15 @@ extension ViewController: InfiniteCollectionViewDataSource
         return 70.0
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func numberOfItems(collectionView: UICollectionView) -> Int
     {
         return cellItems.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    func cellForItemAtIndexPath(collectionView: UICollectionView, dequeueIndexPath: NSIndexPath, usableIndexPath: NSIndexPath)  -> UICollectionViewCell
     {
-        let cell = infiniteCollectionView.dequeueReusableCellWithReuseIdentifier("cellCollectionView", forIndexPath: indexPath) as! ExampleCollectionViewCell
-        cell.lbTitle.text = cellItems[indexPath.row]
+        let cell = infiniteCollectionView.dequeueReusableCellWithReuseIdentifier("cellCollectionView", forIndexPath: dequeueIndexPath) as! ExampleCollectionViewCell
+        cell.lbTitle.text = cellItems[usableIndexPath.row]
         return cell
     }
 }

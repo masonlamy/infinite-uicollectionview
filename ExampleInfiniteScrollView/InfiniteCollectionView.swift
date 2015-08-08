@@ -8,8 +8,10 @@
 
 import UIKit
 
-protocol InfiniteCollectionViewDataSource : UICollectionViewDataSource
+protocol InfiniteCollectionViewDataSource
 {
+    func cellForItemAtIndexPath(collectionView: UICollectionView, dequeueIndexPath: NSIndexPath, usableIndexPath: NSIndexPath) -> UICollectionViewCell
+    func numberOfItems(collectionView: UICollectionView) -> Int
     func widthForCellAtIndexPath(indexPath: NSIndexPath) -> CGFloat
 }
 
@@ -23,35 +25,11 @@ class InfiniteCollectionView: UICollectionView
     {
         super.init(coder: aDecoder)
         dataSource = self
-        backgroundColor = UIColor.grayColor()
     }
     
     func shiftContentArray(offset: Int)
     {
         indexOffset += offset
-        
-        if let numberOfItems = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0)
-        {
-            if (indexOffset >= numberOfItems)
-            {
-                indexOffset -= numberOfItems
-            }
-        }
-        printCurrentContentArray()
-    }
-    
-    func printCurrentContentArray()
-    {
-        var currentContent = [String]()
-        if let numberOfItems = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0)
-        {
-            for indexRow in 0..<numberOfItems
-            {
-                let correctedIndex = getCorrectedIndex(indexRow + indexOffset)
-                currentContent.append((infiniteDataSource!.collectionView(self, cellForItemAtIndexPath: NSIndexPath(forRow: correctedIndex, inSection: 0)) as! ExampleCollectionViewCell).lbTitle.text!)
-            }
-        }
-        println("Current Content: \(currentContent)")
     }
     
     override func layoutSubviews()
@@ -105,7 +83,7 @@ class InfiniteCollectionView: UICollectionView
     
     func getCorrectedIndex(indexToCorrect: Int) -> Int
     {
-        if let numberOfCells = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0)
+        if let numberOfCells = infiniteDataSource?.numberOfItems(self)
         {
             if (indexToCorrect < numberOfCells && indexToCorrect >= 0)
             {
@@ -127,36 +105,23 @@ class InfiniteCollectionView: UICollectionView
     
     func getTotalContentWidth() -> CGFloat
     {
-        if let numberOfCells = infiniteDataSource?.collectionView(self, numberOfItemsInSection: 0),
-        let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
-        {
-            return CGFloat(numberOfCells) * (cellWidth + cellPadding)
-        }
-        else
-        {
-            return 0.0
-        }
+        let numberOfCells = infiniteDataSource?.numberOfItems(self) ?? 0
+        let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) ?? 0
+        return CGFloat(numberOfCells) * (cellWidth + cellPadding)
     }
+    
 }
 
 extension InfiniteCollectionView: UICollectionViewDataSource
 {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        if let numberOfItems = infiniteDataSource?.collectionView(self, numberOfItemsInSection: section)
-        {
-            println("numberOfItems * 3: \(3 * numberOfItems)")
-            return  3 * numberOfItems
-        }
-        else
-        {
-            return 0
-        }
+        let numberOfItems = infiniteDataSource?.numberOfItems(self) ?? 0
+        return  3 * numberOfItems
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
-        println("indexPath row: \(indexPath.row)")
-        return infiniteDataSource!.collectionView(collectionView, cellForItemAtIndexPath: NSIndexPath(forRow: getCorrectedIndex(indexPath.row + indexOffset), inSection: 0))
+        return infiniteDataSource!.cellForItemAtIndexPath(self, dequeueIndexPath: indexPath, usableIndexPath: NSIndexPath(forRow: getCorrectedIndex(indexPath.row - indexOffset), inSection: 0))
     }
 }
