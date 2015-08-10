@@ -11,21 +11,22 @@ import UIKit
 class ViewController: UIViewController
 {
     @IBOutlet weak var infiniteCollectionView: InfiniteCollectionView!
+    {
+        didSet
+        {
+            infiniteCollectionView.backgroundColor = UIColor.whiteColor()
+            infiniteCollectionView.registerNib(UINib(nibName: "ExampleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cellCollectionView")
+            infiniteCollectionView.infiniteDataSource = self
+            infiniteCollectionView.reloadData()
+        }
+    }
     
     private let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
+    private let cellWidth = CGFloat(70.0)
 
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        setupInfiniteCollectionView()
-    }
-    
-    private func setupInfiniteCollectionView()
-    {
-        infiniteCollectionView.backgroundColor = UIColor.grayColor()
-        infiniteCollectionView.registerNib(UINib(nibName: "ExampleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cellCollectionView")
-        infiniteCollectionView.infiniteDataSource = self
-        infiniteCollectionView.reloadData()
     }
 }
 
@@ -33,7 +34,7 @@ extension ViewController: InfiniteCollectionViewDataSource
 {
     func widthForCellAtIndexPath(indexPath: NSIndexPath) -> CGFloat
     {
-        return 70.0
+        return cellWidth
     }
     
     func numberOfItems(collectionView: UICollectionView) -> Int

@@ -51,7 +51,7 @@ class InfiniteCollectionView: UICollectionView
         {
             if let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
             {
-                // Total cells including partial cells from centre
+                // Total cells (including partial cells) from centre
                 let cellcount = distFromCentre/(cellWidth+cellPadding)
                 
                 // Amount of cells to shift (whole number) - conditional statement due to nature of +ve or -ve cellcount
