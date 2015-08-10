@@ -4,6 +4,8 @@ This repository aims to provide a simple way of implementing an infinite collect
 By infinite, we mean that as soon as a user reaches the boundary of the collection view
 content, the content will then loop back to the start in a circular manner. 
 
+![preview](http://masonlamy.com/wp-content/uploads/2015/01/infinite-uicollectionview-preview.gif)
+
 Using InfiniteCollectionView
 --------------------------
 
