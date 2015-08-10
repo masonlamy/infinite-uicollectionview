@@ -17,9 +17,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i4c-6Q-HIH" customClass="InfiniteCollectionView" customModule="ExampleInfiniteScrollView" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="265" width="600" height="70"/>
+                                <rect key="frame" x="0.0" y="250" width="600" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="dbW-kV-mPE"/>
+                                    <constraint firstAttribute="height" constant="100" id="dbW-kV-mPE"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Wxa-73-IrY">
                                     <size key="itemSize" width="70" height="70"/>
