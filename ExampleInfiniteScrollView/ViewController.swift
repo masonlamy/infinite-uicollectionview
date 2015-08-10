@@ -46,6 +46,8 @@ extension ViewController: InfiniteCollectionViewDataSource
     {
         let cell = infiniteCollectionView.dequeueReusableCellWithReuseIdentifier("cellCollectionView", forIndexPath: dequeueIndexPath) as! ExampleCollectionViewCell
         cell.lbTitle.text = cellItems[usableIndexPath.row]
+        cell.backgroundImage.image = UIImage(named: "cell-1")
         return cell
+            
     }
 }

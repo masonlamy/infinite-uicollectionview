@@ -18,7 +18,7 @@ protocol InfiniteCollectionViewDataSource
 class InfiniteCollectionView: UICollectionView
 {
     var infiniteDataSource: InfiniteCollectionViewDataSource?
-    private let cellPadding: CGFloat = 10
+    private let cellPadding: CGFloat = 10.0
     private var indexOffset = 0
     
     required init(coder aDecoder: NSCoder)
@@ -27,7 +27,7 @@ class InfiniteCollectionView: UICollectionView
         dataSource = self
     }
     
-    func shiftContentArray(offset: Int)
+    private func shiftContentArray(offset: Int)
     {
         indexOffset += offset
     }
@@ -38,7 +38,7 @@ class InfiniteCollectionView: UICollectionView
         centreIfNeeded()
     }
 
-    func centreIfNeeded()
+    private func centreIfNeeded()
     {
         let currentOffset = contentOffset
         let contentWidth = getTotalContentWidth()
@@ -81,7 +81,7 @@ class InfiniteCollectionView: UICollectionView
         }
     }
     
-    func getCorrectedIndex(indexToCorrect: Int) -> Int
+    private func getCorrectedIndex(indexToCorrect: Int) -> Int
     {
         if let numberOfCells = infiniteDataSource?.numberOfItems(self)
         {
@@ -103,7 +103,7 @@ class InfiniteCollectionView: UICollectionView
         }
     }
     
-    func getTotalContentWidth() -> CGFloat
+    private func getTotalContentWidth() -> CGFloat
     {
         let numberOfCells = infiniteDataSource?.numberOfItems(self) ?? 0
         let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) ?? 0

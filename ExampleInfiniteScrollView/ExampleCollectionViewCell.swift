@@ -10,12 +10,12 @@ import UIKit
 
 class ExampleCollectionViewCell: UICollectionViewCell
 {
+    @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var lbTitle: UILabel!
 
     override func awakeFromNib()
     {
         super.awakeFromNib()
-        // Initialization code
     }
 
 }
