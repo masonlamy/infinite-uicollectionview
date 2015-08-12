@@ -12,32 +12,28 @@ protocol InfiniteCollectionViewDataSource
 {
     func cellForItemAtIndexPath(collectionView: UICollectionView, dequeueIndexPath: NSIndexPath, usableIndexPath: NSIndexPath) -> UICollectionViewCell
     func numberOfItems(collectionView: UICollectionView) -> Int
-    func widthForCellAtIndexPath(indexPath: NSIndexPath) -> CGFloat
 }
 
 class InfiniteCollectionView: UICollectionView
 {
     var infiniteDataSource: InfiniteCollectionViewDataSource?
     
-    private let cellPadding: CGFloat = 10.0
+    private var cellPadding = CGFloat(0)
+    private var cellWidth = CGFloat(0)
     private var indexOffset = 0
-    
-    override var dataSource: UICollectionViewDataSource?
-    {
-        didSet
-        {
-            if (!self.dataSource!.isEqual(self))
-            {
-                println("WARNING: UICollectionView DataSource must not be modified.  Set infiniteDataSource instead.")
-                self.dataSource = self
-            }
-        }
-    }
     
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
         dataSource = self
+        setupCellDimensions()
+    }
+    
+    private func setupCellDimensions()
+    {
+        let layout = self.collectionViewLayout as! UICollectionViewFlowLayout
+        cellPadding = layout.minimumInteritemSpacing
+        cellWidth = layout.itemSize.width
     }
     
     override func layoutSubviews()
@@ -57,35 +53,33 @@ class InfiniteCollectionView: UICollectionView
         
         if (fabs(distFromCentre) > (contentWidth / 4))
         {
-            if let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
+            // Total cells (including partial cells) from centre
+            let cellcount = distFromCentre/(cellWidth+cellPadding)
+            
+            // Amount of cells to shift (whole number) - conditional statement due to nature of +ve or -ve cellcount
+            let shiftCells = Int((cellcount > 0) ? floor(cellcount) : ceil(cellcount))
+            
+            // Amount left over to correct for
+            let offsetCorrection = (abs(cellcount) % 1) * (cellWidth+cellPadding)
+            
+            // Scroll back to the centre of the view, offset by the correction to ensure it's not noticable
+            if (contentOffset.x < centerOffsetX)
             {
-                // Total cells (including partial cells) from centre
-                let cellcount = distFromCentre/(cellWidth+cellPadding)
-                
-                // Amount of cells to shift (whole number) - conditional statement due to nature of +ve or -ve cellcount
-                let shiftCells = Int((cellcount > 0) ? floor(cellcount) : ceil(cellcount))
-                
-                // Amount left over to correct for
-                let offsetCorrection = (abs(cellcount) % 1) * (cellWidth+cellPadding)
-                
-                // Scroll back to the centre of the view, offset by the correction to ensure it's not noticable
-                if (contentOffset.x < centerOffsetX)
-                {
-                    //left scrolling
-                    contentOffset = CGPoint(x: centerOffsetX - offsetCorrection, y: currentOffset.y)
-                }
-                else if (contentOffset.x > centerOffsetX)
-                {
-                    //right scrolling
-                    contentOffset = CGPoint(x: centerOffsetX + offsetCorrection, y: currentOffset.y)
-                }
-                
-                // Make content shift as per shiftCells
-                shiftContentArray(getCorrectedIndex(shiftCells))
-                
-                // Reload cells, due to data shift changes above
-                reloadData()
+                //left scrolling
+                contentOffset = CGPoint(x: centerOffsetX - offsetCorrection, y: currentOffset.y)
             }
+            else if (contentOffset.x > centerOffsetX)
+            {
+                //right scrolling
+                contentOffset = CGPoint(x: centerOffsetX + offsetCorrection, y: currentOffset.y)
+            }
+            
+            // Make content shift as per shiftCells
+            shiftContentArray(getCorrectedIndex(shiftCells))
+            
+            // Reload cells, due to data shift changes above
+            reloadData()
+            
         }
     }
     
@@ -97,7 +91,6 @@ class InfiniteCollectionView: UICollectionView
     private func getTotalContentWidth() -> CGFloat
     {
         let numberOfCells = infiniteDataSource?.numberOfItems(self) ?? 0
-        let cellWidth = infiniteDataSource?.widthForCellAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) ?? 0
         return CGFloat(numberOfCells) * (cellWidth + cellPadding)
     }
 }
@@ -134,6 +127,21 @@ extension InfiniteCollectionView: UICollectionViewDataSource
         else
         {
             return 0
+        }
+    }
+}
+
+extension InfiniteCollectionView
+{
+    override var dataSource: UICollectionViewDataSource?
+    {
+        didSet
+        {
+            if (!self.dataSource!.isEqual(self))
+            {
+                println("WARNING: UICollectionView DataSource must not be modified.  Set infiniteDataSource instead.")
+                self.dataSource = self
+            }
         }
     }
 }

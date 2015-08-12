@@ -22,7 +22,6 @@ class ViewController: UIViewController
     }
     
     private let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
-    private let cellWidth = CGFloat(70.0)
 
     override func viewDidLoad()
     {
@@ -32,10 +31,6 @@ class ViewController: UIViewController
 
 extension ViewController: InfiniteCollectionViewDataSource
 {
-    func widthForCellAtIndexPath(indexPath: NSIndexPath) -> CGFloat
-    {
-        return cellWidth
-    }
     
     func numberOfItems(collectionView: UICollectionView) -> Int
     {
