@@ -26,10 +26,6 @@ This function operates exactly the same as the regular cellForItemAtIndexPath, h
 
 As with the standard UICollectionViewDatasource, simply return the number of cells of content you have.
 
-`func widthForCellAtIndexPath(indexPath: NSIndexPath) -> CGFloat`
-
-Currently this function should return a constant, the cell size.  In future this will be used to allow widths of various sizes.
-
 Current Support
 --------------------------
 You can use InfiniteCollectionView to scroll infinitely in a horizontal direction with equally sized cells.
