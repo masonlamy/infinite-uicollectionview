@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController
 {
+    private let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
+    
     @IBOutlet weak var infiniteCollectionView: InfiniteCollectionView!
     {
         didSet
@@ -17,12 +19,11 @@ class ViewController: UIViewController
             infiniteCollectionView.backgroundColor = UIColor.whiteColor()
             infiniteCollectionView.registerNib(UINib(nibName: "ExampleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cellCollectionView")
             infiniteCollectionView.infiniteDataSource = self
+            infiniteCollectionView.infiniteDelegate = self
             infiniteCollectionView.reloadData()
         }
     }
     
-    private let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
-
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -31,7 +32,6 @@ class ViewController: UIViewController
 
 extension ViewController: InfiniteCollectionViewDataSource
 {
-    
     func numberOfItems(collectionView: UICollectionView) -> Int
     {
         return cellItems.count
@@ -43,6 +43,13 @@ extension ViewController: InfiniteCollectionViewDataSource
         cell.lbTitle.text = cellItems[usableIndexPath.row]
         cell.backgroundImage.image = UIImage(named: "cell-1")
         return cell
-            
+    }
+}
+
+extension ViewController: InfiniteCollectionViewDelegate
+{
+    func didSelectCellAtIndexPath(collectionView: UICollectionView, usableIndexPath: NSIndexPath)
+    {
+        println("Selected cell with name \(cellItems[usableIndexPath.row])")
     }
 }

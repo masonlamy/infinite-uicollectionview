@@ -14,9 +14,15 @@ protocol InfiniteCollectionViewDataSource
     func numberOfItems(collectionView: UICollectionView) -> Int
 }
 
+protocol InfiniteCollectionViewDelegate
+{
+    func didSelectCellAtIndexPath(collectionView: UICollectionView, usableIndexPath: NSIndexPath)
+}
+
 class InfiniteCollectionView: UICollectionView
 {
     var infiniteDataSource: InfiniteCollectionViewDataSource?
+    var infiniteDelegate: InfiniteCollectionViewDelegate?
     
     private var cellPadding = CGFloat(0)
     private var cellWidth = CGFloat(0)
@@ -26,6 +32,7 @@ class InfiniteCollectionView: UICollectionView
     {
         super.init(coder: aDecoder)
         dataSource = self
+        delegate = self
         setupCellDimensions()
     }
     
@@ -79,7 +86,6 @@ class InfiniteCollectionView: UICollectionView
             
             // Reload cells, due to data shift changes above
             reloadData()
-            
         }
     }
     
@@ -131,6 +137,14 @@ extension InfiniteCollectionView: UICollectionViewDataSource
     }
 }
 
+extension InfiniteCollectionView: UICollectionViewDelegate
+{
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    {
+        infiniteDelegate?.didSelectCellAtIndexPath(self, usableIndexPath: NSIndexPath(forRow: getCorrectedIndex(indexPath.row - indexOffset), inSection: 0))
+    }
+}
+
 extension InfiniteCollectionView
 {
     override var dataSource: UICollectionViewDataSource?
@@ -141,6 +155,18 @@ extension InfiniteCollectionView
             {
                 println("WARNING: UICollectionView DataSource must not be modified.  Set infiniteDataSource instead.")
                 self.dataSource = self
+            }
+        }
+    }
+    
+    override var delegate: UICollectionViewDelegate?
+    {
+        didSet
+        {
+            if (!self.delegate!.isEqual(self))
+            {
+                println("WARNING: UICollectionView delegate must not be modified.  Set infiniteDelegate instead.")
+                self.delegate = self
             }
         }
     }
