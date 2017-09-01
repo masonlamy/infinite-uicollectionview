@@ -10,14 +10,14 @@ import UIKit
 
 class ViewController: UIViewController
 {
-    private let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
+    fileprivate let cellItems = ["One", "Two", "Three", "Four", "Five", "Six"]
     
     @IBOutlet weak var infiniteCollectionView: InfiniteCollectionView!
     {
         didSet
         {
-            infiniteCollectionView.backgroundColor = UIColor.whiteColor()
-            infiniteCollectionView.registerNib(UINib(nibName: "ExampleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cellCollectionView")
+            infiniteCollectionView.backgroundColor = UIColor.white
+            infiniteCollectionView.register(UINib(nibName: "ExampleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cellCollectionView")
             infiniteCollectionView.infiniteDataSource = self
             infiniteCollectionView.infiniteDelegate = self
             infiniteCollectionView.reloadData()
@@ -32,14 +32,14 @@ class ViewController: UIViewController
 
 extension ViewController: InfiniteCollectionViewDataSource
 {
-    func numberOfItems(collectionView: UICollectionView) -> Int
+    func numberOfItems(_ collectionView: UICollectionView) -> Int
     {
         return cellItems.count
     }
     
-    func cellForItemAtIndexPath(collectionView: UICollectionView, dequeueIndexPath: NSIndexPath, usableIndexPath: NSIndexPath)  -> UICollectionViewCell
+    func cellForItemAtIndexPath(_ collectionView: UICollectionView, dequeueIndexPath: IndexPath, usableIndexPath: IndexPath)  -> UICollectionViewCell
     {
-        let cell = infiniteCollectionView.dequeueReusableCellWithReuseIdentifier("cellCollectionView", forIndexPath: dequeueIndexPath) as! ExampleCollectionViewCell
+        let cell = infiniteCollectionView.dequeueReusableCell(withReuseIdentifier: "cellCollectionView", for: dequeueIndexPath) as! ExampleCollectionViewCell
         cell.lbTitle.text = cellItems[usableIndexPath.row]
         cell.backgroundImage.image = UIImage(named: "cell-1")
         return cell
@@ -48,8 +48,8 @@ extension ViewController: InfiniteCollectionViewDataSource
 
 extension ViewController: InfiniteCollectionViewDelegate
 {
-    func didSelectCellAtIndexPath(collectionView: UICollectionView, usableIndexPath: NSIndexPath)
+    func didSelectCellAtIndexPath(_ collectionView: UICollectionView, usableIndexPath: IndexPath)
     {
-        println("Selected cell with name \(cellItems[usableIndexPath.row])")
+        print("Selected cell with name \(cellItems[usableIndexPath.row])")
     }
 }
